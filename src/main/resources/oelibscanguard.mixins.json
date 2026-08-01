@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.erutobusiness.oelibscanguard.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "oelibscanguard.refmap.json",
+  "mixins": [
+    "NetworkAutoRegistrationMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

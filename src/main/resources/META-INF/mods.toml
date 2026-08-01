@@ -1,0 +1,46 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/erutobusiness"
+
+[[mixins]]
+config="oelibscanguard.mixins.json"
+
+[[mods]]
+modId="oelibscanguard"
+version="1.0.0"
+displayName="OELib Scan Guard"
+authors="erutobusiness"
+description='''
+Fixes an intermittent startup crash in OELib.
+
+OELib snapshots its packet base-package set with Set.copyOf() without holding the
+synchronized wrapper's monitor. Forge constructs mods in parallel, so another mod
+registering a base package at that moment mutates the set mid-iteration and the game
+dies with ConcurrentModificationException. Because it is a race, it only happens
+some of the time (measured at roughly 3% of starts in a 289-mod pack).
+
+This mod takes that monitor around the copy. It changes nothing else.
+Remove it once upstream OELib fixes the race.
+'''
+
+[[dependencies.oelibscanguard]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.oelibscanguard]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.20.2)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.oelibscanguard]]
+    modId="oelib"
+    mandatory=true
+    versionRange="[0.2.2,0.3)"
+    ordering="NONE"
+    side="BOTH"

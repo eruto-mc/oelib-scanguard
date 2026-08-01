@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7.38'
+    }
+}
+
+plugins {
+    id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+version = '1.0.0'
+group = 'net.erutobusiness'
+base { archivesName = 'oelib_scanguard' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+}
+
+mixin {
+    add sourceSets.main, 'oelibscanguard.refmap.json'
+    config 'oelibscanguard.mixins.json'
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    // Mixin のターゲット解決用。実行時は同梱しない（利用者が入れている OELib に当てる）
+    compileOnly files('libs/oelib.jar')
+}
+
+jar {
+    manifest {
+        attributes([
+            'Specification-Title'   : 'oelib_scanguard',
+            'Specification-Version' : '1',
+            'Implementation-Title'  : 'OELib Scan Guard',
+            'Implementation-Version': project.version,
+            'MixinConfigs'          : 'oelibscanguard.mixins.json'
+        ])
+    }
+}
