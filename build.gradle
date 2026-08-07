@@ -33,11 +33,20 @@ mixin {
     config 'oelibscanguard.mixins.json'
 }
 
+repositories {
+    // MOD の依存を取る maven。手元に jar を置かずに済ませるため（2026-08-07）
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+        content { includeGroup "maven.modrinth" }
+    }
+}
+
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     // Mixin のターゲット解決用。実行時は同梱しない（利用者が入れている OELib に当てる）
-    compileOnly files('libs/oelib.jar')
+    compileOnly "maven.modrinth:oelib:0.2.4.1"
 }
 
 jar {
